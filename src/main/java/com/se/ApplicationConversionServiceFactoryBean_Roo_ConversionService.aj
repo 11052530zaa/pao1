@@ -4,6 +4,7 @@
 package com.se;
 
 import com.se.ApplicationConversionServiceFactoryBean;
+import com.se.Dsadasd;
 import com.se.Sdadsd;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
@@ -12,6 +13,30 @@ import org.springframework.format.FormatterRegistry;
 privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService {
     
     declare @type: ApplicationConversionServiceFactoryBean: @Configurable;
+    
+    public Converter<Dsadasd, String> ApplicationConversionServiceFactoryBean.getDsadasdToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<com.se.Dsadasd, java.lang.String>() {
+            public String convert(Dsadasd dsadasd) {
+                return "(no displayable fields)";
+            }
+        };
+    }
+    
+    public Converter<Long, Dsadasd> ApplicationConversionServiceFactoryBean.getIdToDsadasdConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.se.Dsadasd>() {
+            public com.se.Dsadasd convert(java.lang.Long id) {
+                return Dsadasd.findDsadasd(id);
+            }
+        };
+    }
+    
+    public Converter<String, Dsadasd> ApplicationConversionServiceFactoryBean.getStringToDsadasdConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, com.se.Dsadasd>() {
+            public com.se.Dsadasd convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), Dsadasd.class);
+            }
+        };
+    }
     
     public Converter<Sdadsd, String> ApplicationConversionServiceFactoryBean.getSdadsdToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.se.Sdadsd, java.lang.String>() {
@@ -38,6 +63,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public void ApplicationConversionServiceFactoryBean.installLabelConverters(FormatterRegistry registry) {
+        registry.addConverter(getDsadasdToStringConverter());
+        registry.addConverter(getIdToDsadasdConverter());
+        registry.addConverter(getStringToDsadasdConverter());
         registry.addConverter(getSdadsdToStringConverter());
         registry.addConverter(getIdToSdadsdConverter());
         registry.addConverter(getStringToSdadsdConverter());
